@@ -28,12 +28,12 @@ GPIO.setup(RELAY, GPIO.OUT, initial=GPIO.LOW)
 
 while run_service.is_set():
     if 6 <= datetime.now().hour < 22:
-        # relay - on, fan - on
-        GPIO.output(RELAY, GPIO.HIGH)
+        # relay - off, fan - on
+        GPIO.output(RELAY, GPIO.LOW)
 
     else:
-        # relay - off, fan - off
-        GPIO.output(RELAY, GPIO.LOW)
+        # relay - on, fan - off
+        GPIO.output(RELAY, GPIO.HIGH)
 
     sleep(60)
 
