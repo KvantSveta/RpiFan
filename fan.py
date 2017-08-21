@@ -2,6 +2,7 @@ import signal
 from time import sleep
 from datetime import datetime
 from threading import Event
+from subprocess import check_output
 
 import RPi.GPIO as GPIO
 
@@ -27,7 +28,11 @@ RELAY = 20
 GPIO.setup(RELAY, GPIO.OUT, initial=GPIO.LOW)
 
 while run_service.is_set():
-    if 6 <= datetime.now().hour < 22:
+	temp = check_output(["cat", "/sys/class/thermal/thermal_zone0/temp"])
+	temp = temp.decode()
+	temp = round(int(temp) / 1000, 1)
+
+    if (6 <= datetime.now().hour < 22) or (temp > 45):
         # relay - off, fan - on
         GPIO.output(RELAY, GPIO.LOW)
 
